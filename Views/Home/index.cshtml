@@ -1,0 +1,32 @@
+﻿@model IQueryable<LinkShorter.Models.Domain.Tbl_News>
+
+@{ LinkShorter.Models.Utility.Utility U = new LinkShorter.Models.Utility.Utility();
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>index</title>
+</head>
+<body>
+    @foreach (var item in Model)
+    {
+        <div><a href="/News/@item.LongLink">@item.Title</a></div>
+    }
+    <br />
+    <br />
+    <br />
+    <br />
+    @foreach (var item in Model)
+    {<div>
+            <a href="/N/@U.ConvertToChar(item.Tbl_Links.Link)">@item.Title</a>&nbsp; &nbsp; &nbsp; &nbsp;<a href="/NewsDelete/@U.ConvertToChar(item.Tbl_Links.Link)">حذف کردن</a>
+        </div>
+    }
+    @{ LinkShorter.Models.Domain.DataBaseLSH db = new LinkShorter.Models.Domain.DataBaseLSH();
+        <div>@db.Tbl_Links.Count()</div>
+    }
+    
+</body>
+</html>

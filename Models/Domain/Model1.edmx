@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="LinkShorterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Tbl_Links">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Link" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tbl_News">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LongLink" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ShortLink" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Tbl_News_Tbl_Links">
+          <End Role="Tbl_Links" Type="Self.Tbl_Links" Multiplicity="1" />
+          <End Role="Tbl_News" Type="Self.Tbl_News" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Links">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_News">
+              <PropertyRef Name="ShortLink" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LinkShorterModelStoreContainer">
+          <EntitySet Name="Tbl_Links" EntityType="Self.Tbl_Links" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_News" EntityType="Self.Tbl_News" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Tbl_News_Tbl_Links" Association="Self.FK_Tbl_News_Tbl_Links">
+            <End Role="Tbl_Links" EntitySet="Tbl_Links" />
+            <End Role="Tbl_News" EntitySet="Tbl_News" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LinkShorterModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Tbl_Links">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Link" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Tbl_News" Relationship="Self.FK_Tbl_News_Tbl_Links" FromRole="Tbl_Links" ToRole="Tbl_News" />
+        </EntityType>
+        <EntityType Name="Tbl_News">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LongLink" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ShortLink" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Tbl_Links" Relationship="Self.FK_Tbl_News_Tbl_Links" FromRole="Tbl_News" ToRole="Tbl_Links" />
+        </EntityType>
+        <Association Name="FK_Tbl_News_Tbl_Links">
+          <End Role="Tbl_Links" Type="Self.Tbl_Links" Multiplicity="1" />
+          <End Role="Tbl_News" Type="Self.Tbl_News" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Links">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Tbl_News">
+              <PropertyRef Name="ShortLink" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DataBaseLSH" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Tbl_Links" EntityType="Self.Tbl_Links" />
+          <EntitySet Name="Tbl_News" EntityType="Self.Tbl_News" />
+          <AssociationSet Name="FK_Tbl_News_Tbl_Links" Association="Self.FK_Tbl_News_Tbl_Links">
+            <End Role="Tbl_Links" EntitySet="Tbl_Links" />
+            <End Role="Tbl_News" EntitySet="Tbl_News" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LinkShorterModelStoreContainer" CdmEntityContainer="DataBaseLSH">
+          <EntitySetMapping Name="Tbl_Links">
+            <EntityTypeMapping TypeName="LinkShorterModel.Tbl_Links">
+              <MappingFragment StoreEntitySet="Tbl_Links">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_News">
+            <EntityTypeMapping TypeName="LinkShorterModel.Tbl_News">
+              <MappingFragment StoreEntitySet="Tbl_News">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="LongLink" ColumnName="LongLink" />
+                <ScalarProperty Name="ShortLink" ColumnName="ShortLink" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

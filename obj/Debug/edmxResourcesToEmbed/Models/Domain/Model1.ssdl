@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LinkShorterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Tbl_Links">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Link" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Status" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Tbl_News">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="LongLink" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ShortLink" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Tbl_News_Tbl_Links">
+    <End Role="Tbl_Links" Type="Self.Tbl_Links" Multiplicity="1" />
+    <End Role="Tbl_News" Type="Self.Tbl_News" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tbl_Links">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Tbl_News">
+        <PropertyRef Name="ShortLink" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="LinkShorterModelStoreContainer">
+    <EntitySet Name="Tbl_Links" EntityType="Self.Tbl_Links" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Tbl_News" EntityType="Self.Tbl_News" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Tbl_News_Tbl_Links" Association="Self.FK_Tbl_News_Tbl_Links">
+      <End Role="Tbl_Links" EntitySet="Tbl_Links" />
+      <End Role="Tbl_News" EntitySet="Tbl_News" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
